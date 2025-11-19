@@ -65,7 +65,7 @@
 
         fetch('./component.json')
             .then(res => res.json())
-            .then(data => {
+                .then(data => {
             console.log(data);
             });
 
@@ -220,7 +220,6 @@
             renderApp();
         }
 
-        /*
         // --- API Call: Gemini Description (Tetap menggunakan API) ---
         async function generateBuildDescription() {
             if (appState.isLoading) return;
@@ -290,7 +289,7 @@
             appState.geminiDescription = responseText;
             appState.isLoading = false;
             renderApp();
-        }*/
+        }
 
 
         // --- Data Persistence (CRUD LocalStorage) ---
