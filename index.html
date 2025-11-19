@@ -105,34 +105,29 @@
         }
 
         /** Inisialisasi data aplikasi dari mock data atau LocalStorage. */
-        function initData() {
-            // 1. Inisialisasi Komponen (Ambil dari LocalStorage, jika kosong, gunakan Mock Data)
-            let storedComponents = loadFromLocalStorage(COMPONENTS_KEY, null);
-            
-            if (!storedComponents || storedComponents.length === 0) {
-                // Konversi array mock menjadi format yang dapat dicari
-                const initialComponents = {};
-                MOCK_COMPONENTS.forEach(comp => {
-                    const cat = comp.category.toLowerCase();
-                    if (!initialComponents[cat]) initialComponents[cat] = [];
-                    // Tambahkan ID unik untuk data yang baru dibuat
-                    initialComponents[cat].push({ ...comp, id: generateId() });
-                });
-                
-                // Simpan mock data ke LocalStorage dan state
-                saveToLocalStorage(COMPONENTS_KEY, initialComponents);
-                appState.components = initialComponents;
-                console.log("Mock components diinisialisasi dan disimpan ke LocalStorage.");
-            } else {
-                appState.components = storedComponents;
-            }
+        async function initData() {
+        // Coba load dari localStorage
+        let storedComponents = loadFromLocalStorage(COMPONENTS_KEY, null);
 
-            // 2. Muat Builds Saya dan Galeri Publik
+        if (!storedComponents) {
+            try {
+                const res = await fetch('./component.json');
+                const data = await res.json();
+
+                // Asumsikan data sudah dalam bentuk objek bernama categories
+                saveToLocalStorage(COMPONENTS_KEY, data);
+                storedComponents = data;
+                console.log("Komponen dari component.json disimpan ke LocalStorage.");
+            } catch (err) {
+                console.error("Gagal memuat component.json", err);
+                showToast("Gagal memuat daftar komponen.", "error");
+                storedComponents = {};
+            }
+        }
+
+            appState.components = storedComponents;
             appState.myBuilds = loadFromLocalStorage(MY_BUILDS_KEY);
             appState.publicBuilds = loadFromLocalStorage(GALLERY_KEY);
-            
-            // Atur nama build awal
-            appState.currentBuild.buildName = appState.currentBuild.buildName || 'Rakitan Saya';
 
             calculateBuildStatus();
             renderApp();
