@@ -63,6 +63,12 @@
             }, 3000);
         }
 
+        fetch('./component.json')
+            .then(res => res.json())
+            .then(data => {
+            console.log(data);
+            });
+
         /** Kloning dalam objek sederhana. */
         const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
