@@ -63,11 +63,11 @@
             }, 3000);
         }
 
-        fetch('/rigvibes/component.json')
+        /*fetch('/rigvibes/component.json')
             .then(res => res.json())
                 .then(data => {
             console.log(data);
-            });
+            });*/
 
         /** Kloning dalam objek sederhana. */
         const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -111,7 +111,7 @@
 
         if (!storedComponents) {
             try {
-                const res = await fetch(`/rigvibes/component.json`);
+                const res = await fetch(`component.json`);
                 const data = await res.json();
 
                 // Asumsikan data sudah dalam bentuk objek bernama categories
