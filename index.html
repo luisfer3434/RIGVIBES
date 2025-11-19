@@ -111,21 +111,8 @@
 
         if (!storedComponents) {
             try {
-                const REPO_NAME = 'rigvibes'; // <--- Ganti dengan nama repositori Anda!
-                const res = await fetch(`/${REPO_NAME}/component.json`);
+                const res = await fetch(`/rigvibes/component.json`);
                 const data = await res.json();
-                const structuredData = {};
-                // Kategorikan array tunggal menjadi objek dengan kategori sebagai key
-                data.forEach(comp => {
-                const cat = comp.category.toLowerCase();
-                if (!structuredData[cat]) {
-                    structuredData[cat] = [];
-                }
-                structuredData[cat].push(comp);
-            });
-
-            saveToLocalStorage(COMPONENTS_KEY, structuredData);
-            appState.components = structuredData;
 
                 // Asumsikan data sudah dalam bentuk objek bernama categories
                 saveToLocalStorage(COMPONENTS_KEY, data);
